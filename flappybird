@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flappy Word</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to top, #70c5ce, #ffffff);
+      font-family: Arial, sans-serif;
+    }
+
+    canvas {
+      display: block;
+      margin: auto;
+      background: #70c5ce;
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      color: white;
+      font-weight: bold;
+    }
+
+    #restart {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 18px;
+      display: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="score">0</div>
+<button id="restart">Restart</button>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 400;
+canvas.height = 600;
+
+let gravity = 0.6;
+let lift = -10;
+let velocity = 0;
+
+let score = 0;
+let gameOver = false;
+
+const word = {
+  x: 80,
+  y: canvas.height / 2,
+  size: 30,
+  text: "WORD"
+};
+
+let pipes = [];
+
+function createPipe() {
+  let gap = 150;
+  let topHeight = Math.random() * (canvas.height - gap - 100) + 20;
+  pipes.push({
+    x: canvas.width,
+    width: 60,
+    top: topHeight,
+    bottom: canvas.height - topHeight - gap,
+    passed: false
+  });
+}
+
+function drawWord() {
+  ctx.fillStyle = "yellow";
+  ctx.font = word.size + "px Arial";
+  ctx.fillText(word.text, word.x, word.y);
+}
+
+function drawPipes() {
+  ctx.fillStyle = "green";
+  pipes.forEach(pipe => {
+    ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+    ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
+  });
+}
+
+function update() {
+  if (gameOver) return;
+
+  velocity += gravity;
+  word.y += velocity;
+
+  if (word.y > canvas.height || word.y < 0) {
+    endGame();
+  }
+
+  pipes.forEach(pipe => {
+    pipe.x -= 2;
+
+    if (
+      word.x + 80 > pipe.x &&
+      word.x < pipe.x + pipe.width &&
+      (word.y < pipe.top || word.y > canvas.height - pipe.bottom)
+    ) {
+      endGame();
+    }
+
+    if (!pipe.passed && pipe.x + pipe.width < word.x) {
+      score++;
+      document.getElementById("score").innerText = score;
+      pipe.passed = true;
+    }
+  });
+
+  pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
+
+  if (Math.random() < 0.02) {
+    createPipe();
+  }
+}
+
+function endGame() {
+  gameOver = true;
+  document.getElementById("restart").style.display = "block";
+}
+
+function restartGame() {
+  word.y = canvas.height / 2;
+  velocity = 0;
+  pipes = [];
+  score = 0;
+  gameOver = false;
+  document.getElementById("score").innerText = score;
+  document.getElementById("restart").style.display = "none";
+}
+
+document.addEventListener("keydown", () => {
+  velocity = lift;
+});
+
+document.addEventListener("click", () => {
+  velocity = lift;
+});
+
+document.getElementById("restart").addEventListener("click", restartGame);
+
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawWord();
+  drawPipes();
+  update();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+
+</body>
+</html>
