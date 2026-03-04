@@ -1,0 +1,190 @@
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-parchment-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(139, 92, 46, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 46, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  position: relative;
+  z-index: 10;
+}
+
+.appName {
+  font: var(--font-heading);
+  color: var(--color-ink-primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: var(--font-size-3);
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  color: var(--color-neutral-10);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-2);
+  transition: all 0.2s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton:hover {
+  background: var(--color-neutral-3);
+  color: var(--color-accent-9);
+}
+
+.iconButton.active {
+  color: var(--color-gold-highlight);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  position: relative;
+}
+
+.cardContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  touch-action: pan-y;
+}
+
+.footer {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.speakerButton {
+  background: var(--color-accent-3);
+  border: 1px solid var(--color-accent-6);
+  color: var(--color-accent-11);
+  cursor: pointer;
+  padding: var(--space-3);
+  border-radius: var(--radius-round);
+  transition: all 0.2s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.speakerButton:hover {
+  background: var(--color-accent-4);
+  transform: scale(1.05);
+}
+
+.speakerButton:active {
+  transform: scale(0.95);
+}
+
+.swipeHint {
+  font: var(--font-caption);
+  color: var(--color-neutral-9);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  letter-spacing: 0.05em;
+}
+
+.progressContainer {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.progressBar {
+  width: 100%;
+  height: 3px;
+  background: var(--color-neutral-4);
+  border-radius: var(--radius-1);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent-9), var(--color-gold-highlight));
+  border-radius: var(--radius-1);
+  transition: width 0.3s var(--ease);
+}
+
+.progressText {
+  font: var(--font-caption);
+  color: var(--color-neutral-10);
+  text-align: center;
+  font-size: var(--font-size-00);
+}
+
+.streakBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent-2);
+  border-radius: var(--radius-3);
+  font: var(--font-caption);
+  color: var(--color-accent-11);
+  font-weight: 600;
+}
+
+.streakIcon {
+  color: var(--color-gold-highlight);
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--space-4);
+  }
+
+  .appName {
+    font-size: var(--font-size-2);
+  }
+
+  .main {
+    padding: var(--space-4);
+  }
+
+  .footer {
+    padding: var(--space-4);
+  }
+}
